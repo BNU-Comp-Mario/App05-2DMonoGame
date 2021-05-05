@@ -36,7 +36,7 @@ namespace App05MonoGame.Controllers
             FrameSet = frameSet;
             NumberOfFrames = frames;
 
-            FramesPerSecond = 10;
+            FramesPerSecond = 24;
             frameHeight = FrameSet.Height;
             frameWidth = FrameSet.Width / NumberOfFrames;
             IsLooping = true;

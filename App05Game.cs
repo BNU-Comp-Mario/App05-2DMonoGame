@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using System;
+
 namespace App05MonoGame
 {
     /// <summary>
@@ -88,6 +90,8 @@ namespace App05MonoGame
         /// </summary>
         protected override void LoadContent()
         {
+            // Load Background
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
             backgroundImage = Content.Load<Texture2D>(
                 "backgrounds/green_background720p");
@@ -106,7 +110,7 @@ namespace App05MonoGame
             restartButton = new Button(arialFont,
                 Content.Load<Texture2D>("Controls/button-icon-png-200"))
             {
-                Position = new Vector2(1100, 600),
+                Position = new Vector2(1140, 630),
                 Text = "Quit",
                 Scale = 0.6f
             };
@@ -115,7 +119,8 @@ namespace App05MonoGame
 
             // suitable for asteroids type game
 
-            SetupSpaceShip();
+            //SetupSpaceShip();
+           
             SetupAsteroid();
 
             // animated sprites suitable for pacman type game
@@ -130,7 +135,7 @@ namespace App05MonoGame
         private void RestartButton_click(object sender, System.EventArgs e)
         {
             //TODO: do something when the button is clicked!
-            
+
             Exit();
         }
 
@@ -141,19 +146,21 @@ namespace App05MonoGame
         private void SetupAsteroid()
         {
             Texture2D asteroid = Content.Load<Texture2D>(
-               "Actors/Stones2Filled_01");
+           "Actors/Stones2Filled_01");
 
-            asteroidSprite = new Sprite(asteroid, 1200, 500)
+            Random rnd = new Random();
+            int asteroidSpawn = rnd.Next(1, 1280);
+
+            asteroidSprite = new Sprite(asteroid, asteroidSpawn, 0)
             {
-                Direction = new Vector2(-1, 0),
+                Direction = new Vector2(0, 1),
                 Speed = 100,
 
                 Rotation = MathHelper.ToRadians(3),
                 RotationSpeed = 2f,
             };
-
-    }
-
+        }
+    
         /// <summary>
         /// This is a Sprite that can be controlled by a
         /// player using Rotate Left = A, Rotate Right = D, 
@@ -162,7 +169,7 @@ namespace App05MonoGame
         private void SetupSpaceShip()
         {
             Texture2D ship = Content.Load<Texture2D>(
-               "Actors/GreenShip");
+               "Actors/RedShip");
 
             shipSprite = new PlayerSprite(ship, 200, 500)
             {
@@ -191,7 +198,7 @@ namespace App05MonoGame
                 CanWalk = true,
                 Scale = 2.0f,
 
-                Position = new Vector2(200, 200),
+                Position = new Vector2(100, 600),
                 Speed = 200,
                 Direction = new Vector2(1, 0),
 
@@ -249,17 +256,17 @@ namespace App05MonoGame
 
             // Update Asteroids
 
-            shipSprite.Update(gameTime);
+            //shipSprite.Update(gameTime);
             asteroidSprite.Update(gameTime);
 
-            if (shipSprite.HasCollided(asteroidSprite) && shipSprite.IsAlive)
-            {
-                flameEffect.Play();
+            //if (shipSprite.HasCollided(asteroidSprite) && shipSprite.IsAlive)
+            //{
+            //    flameEffect.Play();
 
-                shipSprite.IsActive = false;
-                shipSprite.IsAlive = false;
-                shipSprite.IsVisible = false;
-            }
+                //shipSprite.IsActive = false;
+                //shipSprite.IsAlive = false;
+                //shipSprite.IsVisible = false;
+            //}
 
             // Update Chase Game
 
@@ -271,6 +278,14 @@ namespace App05MonoGame
                 playerSprite.IsActive = false;
                 playerSprite.IsAlive = false;
                 enemySprite.IsActive = false;
+            }
+
+            if (playerSprite.HasCollided(asteroidSprite)) 
+            {
+                playerSprite.IsActive = false;
+                playerSprite.IsAlive = false;
+                playerSprite.CanWalk = false;
+                asteroidSprite.IsActive = false;
             }
 
             coinsController.Update(gameTime);
@@ -296,7 +311,7 @@ namespace App05MonoGame
 
             // Draw asteroids game
 
-            shipSprite.Draw(spriteBatch);
+            //shipSprite.Draw(spriteBatch);
             asteroidSprite.Draw(spriteBatch);
 
             // Draw Chase game
@@ -343,7 +358,7 @@ namespace App05MonoGame
         {
             int margin = 20;
 
-            string names = "Derek & Andrei";
+            string names = "Derek & Andrei || Modified By Jose Gomes";
             string app = "App05: MonogGame";
             string module = "BNU CO453-2020";
 
